@@ -11,6 +11,9 @@ namespace DataAccessLayer.Model.Interfaces
     {
         IEnumerable<Company> GetAll();
         Company GetByCode(string companyCode);
+        void DeleteCompany(int id);
+        bool UpdateCompany(Company company);
+        bool AddCompany(Company company);
         bool SaveCompany(Company company);
     }
 }

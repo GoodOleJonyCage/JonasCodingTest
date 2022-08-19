@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using AutoMapper;
 using BusinessLayer.Model.Models;
 using DataAccessLayer.Model.Interfaces;
+using DataAccessLayer.Model.Models;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
@@ -22,10 +24,44 @@ namespace BusinessLayer.Services
             return _mapper.Map<IEnumerable<CompanyInfo>>(res);
         }
 
-        public CompanyInfo GetCompanyByCode(string companyCode)
+        public async Task<CompanyInfo> GetCompanyByCode(string companyCode)
         {
             var result = _companyRepository.GetByCode(companyCode);
             return _mapper.Map<CompanyInfo>(result);
+        }
+
+        public void DeleteCompany(int id)
+        {
+            _companyRepository.DeleteCompany(id);
+        }
+
+        public bool AddCompany(CompanyInfo company)
+        {
+            return _companyRepository.AddCompany(ConvertToCompany(company));
+        }
+
+        public bool UpdateCompany(CompanyInfo company)
+        {
+            return _companyRepository.UpdateCompany(ConvertToCompany(company));
+        }
+
+        public Company ConvertToCompany(CompanyInfo companyinfo)
+        {
+            Company company = new Company()
+            {
+                CompanyName = companyinfo.CompanyName,
+                AddressLine1 = companyinfo.AddressLine1,
+                AddressLine2 = companyinfo.AddressLine2,
+                AddressLine3 = companyinfo.AddressLine3,
+                PostalZipCode = companyinfo.PostalZipCode,
+                PhoneNumber = companyinfo.PhoneNumber,
+                FaxNumber = companyinfo.FaxNumber,
+                EquipmentCompanyCode = companyinfo.EquipmentCompanyCode,
+                Country = companyinfo.Country,
+                LastModified = companyinfo.LastModified
+
+            };
+            return company;
         }
     }
 }
